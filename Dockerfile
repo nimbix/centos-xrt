@@ -51,7 +51,7 @@ RUN curl -O ${XRT_REPO_URL}
 RUN yum install -y /*.rpm && \
     rm /*.rpm
 # Update XRT setup.sh to check for CentOS 7.6
-RUN sed -i 's/\[\[ $OSREL != \"7.5\"\* \]\]/\[\[ $OSREL != \"7.5\"\* \]\] || \[\[ $OSREL != \"7.6\"\* \]\]/g' /opt/xilinx/xrt/setup.sh
+RUN sed -i 's/\[\[ $OSREL != \"7.5\"\* \]\]/\[\[ $OSREL != \"7.5\"\* \]\] \&\& \[\[ $OSREL != \"7.6\"\* \]\]/g' /opt/xilinx/xrt/setup.sh
 # Expose port 22 for local JARVICE emulation in docker
 EXPOSE 22
 
