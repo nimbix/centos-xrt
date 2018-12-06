@@ -1,6 +1,6 @@
 {
     "name": "Xilinx Runtime",
-    "description": "Ubuntu Linux for Intel with Xilinx Runtime",
+    "description": "CentOS Linux for Intel with Xilinx Runtime",
     "author": "Nimbix, Inc.",
     "licensed": true,
     "classifications": [
