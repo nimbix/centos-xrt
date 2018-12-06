@@ -16,6 +16,20 @@ RUN chmod +x /etc/skel/Desktop/exo-terminal-emulator.desktop
 ADD AppDef.json /etc/NAE/AppDef.json
 RUN curl --fail -X POST -d @/etc/NAE/AppDef.json https://api.jarvice.com/jarvice/validate
 # FPGA platform 
+# Install Newer version of GCC
+ARG GCC_REL_VERSION
+ENV GCC_REL_VERSION ${GCC_REL_VERSION:-5.1.0}
+ENV GCC_REL_URL https://ftp.gnu.org/gnu/gcc/gcc-${GCC_REL_VERSION}/gcc-${GCC_REL_VERSION}.tar.bz2
+RUN curl ${GCC_REL_URL} -O
+RUN yum install -y gmp-devel mpfr-devel libmpc-devel bzip2
+RUN yum groupinstall -y Development tools
+RUN tar -jxvf gcc-${GCC_REL_VERSION}.tar.bz2
+RUN mkdir gcc-${GCC_REL_VERSION}-build
+RUN cd gcc-${GCC_REL_VERSION}-build && ../gcc-${GCC_REL_VERSION}/configure --enable-languages=c,c++ --disable-multilib
+RUN make -j4 -C gcc-${GCC_REL_VERSION}-build && make -C gcc-${GCC_REL_VERSION}-build install
+RUN rm -rf /gcc-${GCC_REL_VERSION}*
+# Add local GCC to LD_LIBRARY_PATH
+RUN echo 'LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64:$LD_LIBRARY_PATH' > /etc/profile.d/jarvice-xrt.sh
 # Install Xilinx runtime
 ARG XRT_REPO_DISTVER
 ENV XRT_REPO_DISTVER ${XRT_REPO_DISTVER:-7.4.1708}
@@ -36,7 +50,8 @@ ENV XRT_REPO_URL https://www.xilinx.com/support/download/xrt/xrt-${XRT_REPO_DATE
 RUN curl -O ${XRT_REPO_URL} 
 RUN yum install -y /*.rpm && \
     rm /*.rpm
-
+# Update XRT setup.sh to check for CentOS 7.6
+RUN sed -i 's/\[\[ $OSREL != \"7.5\"\* \]\]/\[\[ $OSREL != \"7.5\"\* \]\] \&\& \[\[ $OSREL != \"7.6\"\* \]\]/g' /opt/xilinx/xrt/setup.sh
 # Expose port 22 for local JARVICE emulation in docker
 EXPOSE 22
 
