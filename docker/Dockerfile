@@ -1,4 +1,5 @@
-FROM centos:7 
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE:-centos:7}
 MAINTAINER Nimbix, Inc.
 # Branch for JARVICE Desktop (leave null for default)
 ARG GIT_BRANCH
@@ -46,8 +47,8 @@ ENV XRT_REPO_MINOR ${XRT_REPO_MINOR:-1}
 ARG XRT_REPO_PATCH
 ENV XRT_REPO_PATCH ${XRT_REPO_PATCH:-83}
 
-ENV XRT_REPO_URL https://www.xilinx.com/support/download/xrt/xrt-${XRT_REPO_DATE}-${XRT_REPO_MAJOR}-${XRT_REPO_MINOR}-${XRT_REPO_PATCH}/xrt_${XRT_REPO_DATE}.${XRT_REPO_MAJOR}.${XRT_REPO_MINOR}.${XRT_REPO_PATCH}_${XRT_REPO_DISTVER}.rpm
-RUN curl -O ${XRT_REPO_URL} 
+ENV XRT_REPO_URL https://www.xilinx.com/bin/public/openDownload?filename=xrt_${XRT_REPO_DATE}.${XRT_REPO_MAJOR}.${XRT_REPO_MINOR}.${XRT_REPO_PATCH}_${XRT_REPO_DISTVER}-xrt.rpm
+RUN wget ${XRT_REPO_URL} 
 RUN yum install -y /*.rpm && \
     rm /*.rpm
 # Update XRT setup.sh to check for CentOS 7.6

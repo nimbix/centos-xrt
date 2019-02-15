@@ -7,8 +7,7 @@
         "Software Development"
     ],
     "machines": [
-        "nx5u",
-        "nx6u"
+        <jarvice_machines>
     ],
     "vault-types": [
         "FILE",
