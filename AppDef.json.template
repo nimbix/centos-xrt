@@ -1,5 +1,5 @@
 {
-    "name": "Xilinx Runtime",
+    "name": "Xilinx Runtime for <jarvice_desc> (CentOS)",
     "description": "CentOS Linux for Intel with Xilinx Runtime",
     "author": "Nimbix, Inc.",
     "licensed": true,
