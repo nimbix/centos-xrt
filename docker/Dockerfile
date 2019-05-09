@@ -12,8 +12,6 @@ RUN yum install -y curl && \
 # Add terminal shortcut
 ADD exo-terminal-emulator.desktop /etc/skel/Desktop/exo-terminal-emulator.desktop
 RUN chmod +x /etc/skel/Desktop/exo-terminal-emulator.desktop
-# Metadata for App
-ADD xrt-screenshot.png /etc/NAE/screenshot.png
 ADD AppDef.json /etc/NAE/AppDef.json
 RUN curl --fail -X POST -d @/etc/NAE/AppDef.json https://api.jarvice.com/jarvice/validate
 # FPGA platform 
